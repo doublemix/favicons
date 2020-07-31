@@ -16,10 +16,19 @@ module.exports = function(options) {
     return path.substr(-1) === "/" ? path : `${path}/`;
   }
 
+  function cacheBust(path) {
+    if (options.cacheBust) {
+      return `${path}?${options.cacheBust}`;
+    }
+    return path;
+  }
+
   function relative(path, relativeToPath = false) {
-    return url.resolve(
-      (!relativeToPath && options.path && directory(options.path)) || "",
-      path
+    return cacheBust(
+      url.resolve(
+        (!relativeToPath && options.path && directory(options.path)) || "",
+        path
+      )
     );
   }
 
